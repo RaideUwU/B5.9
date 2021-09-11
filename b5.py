@@ -1,14 +1,12 @@
 import time 
 
-def dumb():
-    pass
-
 class Stopwatch:
-    def __init__(self, func=dumb, num_runs=10):
-        self.func = func
+    def __init__(self, num_runs=10):
         self.num_runs = num_runs
 
-    def stopwatch(self):
+    def __call__(self, func, num_runs=10):
+        self.func = func
+        self.num_runs = num_runs
         st = 0
         for i in range(self.num_runs):
             t0 = time.time()
@@ -18,27 +16,19 @@ class Stopwatch:
         st /= self.num_runs
         print(st)
 
-    def __call__(self, func, num_runs=10):
-        self.func = func
-        self.num_runs = num_runs
-        self.stopwatch()
-
     def __enter__(self):
+        self.t0 = time.time()
         return self
 
     def __exit__(self, *args, **kwargs):
-        self.stopwatch()
+        self.t1 = time.time()
+        print(self.t1 - self.t0)
 
-obj = Stopwatch()
-
-@obj
+@Stopwatch(num_runs=10)
 def temp():
     for i in range(1000000):
         pass
 
-def temp1():
+with Stopwatch() as st:
     for i in range(1000000):
         pass
-
-with Stopwatch(temp1) as st:
-    pass
