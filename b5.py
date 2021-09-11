@@ -1,7 +1,7 @@
 import time 
 
 class Stopwatch:
-    def __init__(self, num_runs=10):
+    def __init__(self):
         self.num_runs = num_runs
 
     def __call__(self, func, num_runs=10):
